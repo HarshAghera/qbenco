@@ -3,11 +3,9 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    # Run on pushes to branches (not master) so feature branch pushes get checked
     branches-ignore:
       - master
   pull_request:
-    # Run for PRs targeting master
     branches:
       - master
 
@@ -15,6 +13,7 @@ jobs:
   build:
     name: Build & Check
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,10 +24,11 @@ jobs:
           node-version: '20'
           cache: 'pnpm'
 
-      - name: Enable pnpm via Corepack
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
