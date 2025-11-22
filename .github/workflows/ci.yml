@@ -1,6 +1,7 @@
 name: CI
 
 on:
+  workflow_dispatch:
   push:
     # Run on pushes to branches (not master) so feature branch pushes get checked
     branches-ignore:
